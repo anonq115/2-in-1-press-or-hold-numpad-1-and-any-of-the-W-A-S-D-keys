@@ -1,3 +1,6 @@
+	
+(make sure to left click on the page first to focus) will be adding autofocusing later**
+---press numpadkey1 and press or hold "W A S D " keys to access LAYER 1 press it again to toggle it off ---hold numpadkey1 and press or hold "W A S D" to access LAYER 2
 essentially this lets you access more buttons without needing more physical real estate or having to reach any buttons.
 ---maybe research for the least used keys in the keyboard and replaced it with '/' 
 --use f13 to f24 preferrably (f21 to f24) keys to programmable buttons from the sides of your mouse
