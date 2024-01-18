@@ -13,5 +13,5 @@ to access 2 different layers.
 
 
 
-https://github.com/anonq115/hold-and-press-or-hold-any-of-the-WASD-keys/assets/32353565/42981ef0-2ab3-4f21-adbd-58ca05ff5748
 
+![2in1](https://github.com/anonq115/hold-and-press-or-hold-any-of-the-WASD-keys/assets/32353565/f32a1c70-d5fd-4fde-a8d8-ba781d670def)
