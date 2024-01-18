@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Multi-Key Display with Image</title>
-    <p>
-   hold '/' and press or hold any of the  "W A S D "keys 
-    </p>
+    <title>Exclusive Toggle and Hold Functionality</title>
     <style>
         .container {
             text-align: center;
@@ -19,7 +16,7 @@
             flex-wrap: wrap;
         }
 
-        #image {
+        #image, #secondImage {
             width: 34px;
             height: 34px;
             display: none;
@@ -29,7 +26,7 @@
             display: none;
             font-size: 24px;
             line-height: 34px;
-            margin-left: 5px; /* Space before each key */
+            margin-left: 5px;
         }
 
         .key-indicator:before {
@@ -41,11 +38,19 @@
             display: inline-flex;
             align-items: center;
         }
+
+        /* Invisible button for focusing */
+        #focus-catcher {
+            position: absolute;
+            left: -9999px;
+        }
     </style>
 </head>
 <body>
+    <button id="focus-catcher"></button> <!-- Invisible button for focusing -->
     <div class="container">
         <img id="image" src="https://i.imgur.com/HtgBy4K.jpg" alt="Placeholder">
+        <img id="secondImage" src="https://www.textures4photoshop.com/tex/thumbs/blue-gradient-background-thumb24.jpg" alt="Second Image">
         <div id="keys">
             <div id="keyW" class="key-indicator">W</div>
             <div id="keyA" class="key-indicator">A</div>
@@ -55,40 +60,64 @@
     </div>
     <script>
         let image = document.getElementById('image');
+        let secondImage = document.getElementById('secondImage');
         let keysContainer = document.getElementById('keys');
-        let isSlashPressed = false;
+        let focusCatcher = document.getElementById('focus-catcher');
+        let numpad1Timeout;
+        let isNumpad1Pressed = false;
         const keys = ['w', 'a', 's', 'd'];
         const indicators = {};
+        const longPressDuration = 150; // 0.15 seconds
 
         keys.forEach(key => {
             indicators[key] = document.getElementById('key' + key.toUpperCase());
         });
 
+        // Set focus on the invisible button when the page loads
+        window.onload = function() {
+            focusCatcher.focus();
+        };
+
         document.addEventListener('keydown', function(event) {
-            if (event.key === '/') {
-                isSlashPressed = true;
-                image.style.display = 'block';
-                keysContainer.classList.add('visible');
-            } else if (keys.includes(event.key.toLowerCase()) && isSlashPressed) {
+            if (event.code === 'Numpad1' && !isNumpad1Pressed) {
+                isNumpad1Pressed = true;
+                numpad1Timeout = setTimeout(function() {
+                    if (image.style.display === 'none') {
+                        secondImage.style.display = 'block';
+                        keysContainer.classList.add('visible');
+                    }
+                }, longPressDuration);
+            } else if (keys.includes(event.key.toLowerCase()) && (image.style.display === 'block' || secondImage.style.display === 'block')) {
                 indicators[event.key.toLowerCase()].style.display = 'inline-flex';
             }
         });
 
         document.addEventListener('keyup', function(event) {
-            if (event.key === '/') {
-                isSlashPressed = false;
+            if (event.code === 'Numpad1') {
+                clearTimeout(numpad1Timeout);
+                if (isNumpad1Pressed && secondImage.style.display === 'none') {
+                    toggleDisplay(); // Toggle the first image
+                }
+                secondImage.style.display = 'none'; // Hide the second image
+                keysContainer.classList.remove('visible');
+                isNumpad1Pressed = false;
+            } else if (keys.includes(event.key.toLowerCase())) {
+                indicators[event.key.toLowerCase()].style.display = 'none';
+            }
+        });
+
+        function toggleDisplay() {
+            if (image.style.display === 'none') {
+                image.style.display = 'block';
+                keysContainer.classList.add('visible');
+            } else {
                 image.style.display = 'none';
                 keysContainer.classList.remove('visible');
                 keys.forEach(key => {
                     indicators[key].style.display = 'none';
                 });
-            } else if (keys.includes(event.key.toLowerCase())) {
-                indicators[event.key.toLowerCase()].style.display = 'none';
-                if (!Object.values(indicators).some(indicator => indicator.style.display === 'inline-flex')) {
-                    keysContainer.classList.remove('visible');
-                }
             }
-        });
+        }
     </script>
 </body>
 </html>
