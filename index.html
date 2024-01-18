@@ -67,7 +67,7 @@
         let isNumpad1Pressed = false;
         const keys = ['w', 'a', 's', 'd'];
         const indicators = {};
-        const longPressDuration = 138; // 0.138 seconds
+        const longPressDuration = 138; // 0.138 seconds lower numbers work better on the keyboard keys than the button on the mouse
 
         keys.forEach(key => {
             indicators[key] = document.getElementById('key' + key.toUpperCase());
